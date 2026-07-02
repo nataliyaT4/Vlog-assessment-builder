@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sociological Imagination Vlog Builder</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --panel:#ffffff;
+      --ink:#051435;
+      --muted:#003a65;
+      --line:#8ed8f8;
+      --brand:#0073bc;
+      --brand-2:#003a65;
+      --bright:#29b7ea;
+      --light:#8ed8f8;
+      --good:#00857e;
+      --good-bright:#00dbcf;
+      --warn:#fdc82f;
+      --bad:#da1a35;
+      --soft:#8ed8f8;
+      --soft2:#ffffff;
+      --shadow:0 12px 30px rgba(5,20,53,.12);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:#ffffff;
+      color:var(--ink);
+      line-height:1.5;
+    }
+    header{
+      padding:28px 20px 22px;
+      background:#051435;
+      border-bottom:8px solid #29b7ea;
+      color:white;
+      box-shadow:0 10px 32px rgba(15,23,42,.18);
+    }
+    .wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+    .hero{display:grid;grid-template-columns:1.45fr .9fr;gap:22px;align-items:center}
+    h1{margin:0 0 10px;font-size:clamp(28px,4vw,48px);line-height:1.08;letter-spacing:-.04em}
+    h2{font-size:28px;margin:0 0 10px;letter-spacing:-.02em}
+    h3{font-size:20px;margin:0 0 8px}
+    h4{font-size:16px;margin:0 0 8px}
+    p{margin:0 0 12px}
+    .subtitle{font-size:18px;color:#8ed8f8;max-width:780px}
+    .hero-card{
+      background:#003a65;
+      border:2px solid #29b7ea;
+      border-radius:var(--radius);
+      padding:18px;
+      backdrop-filter:blur(10px);
+    }
+    .hero-card strong{display:block;margin-bottom:8px;font-size:16px}
+    .hero-list{margin:0;padding-left:20px;color:#ffffff}
+    .toolbar{
+      display:flex;flex-wrap:wrap;gap:10px;margin-top:18px
+    }
+    button,.button{
+      border:none;
+      background:var(--brand);
+      color:white;
+      padding:11px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:14px;
+      box-shadow:0 8px 18px rgba(0,115,188,.22);
+      transition:.15s transform,.15s opacity,.15s background;
+    }
+    button:hover,.button:hover{transform:translateY(-1px);opacity:.95}
+    button:disabled{opacity:.42;cursor:not-allowed;transform:none}
+    button.secondary{background:#ffffff;color:#003a65;border:2px solid #0073bc;box-shadow:none}
+    button.ghost{background:transparent;color:#ffffff;border:2px solid #8ed8f8;box-shadow:none}
+    button.small{padding:8px 11px;font-size:13px}
+    main{padding:24px 0 44px}
+    .layout{display:grid;grid-template-columns:270px 1fr;gap:22px;align-items:start}
+    nav{
+      position:sticky;top:16px;background:#ffffff;border:2px solid #8ed8f8;box-shadow:var(--shadow);border-radius:var(--radius);padding:12px
+    }
+    .nav-btn{
+      width:100%;text-align:left;background:transparent;color:var(--ink);box-shadow:none;border-radius:12px;padding:12px 12px;margin:2px 0;border:1px solid transparent;font-weight:800
+    }
+    .nav-btn:hover{background:#8ed8f8;transform:none}
+    .nav-btn.active{background:#003a65;border-color:#003a65;color:#ffffff}
+    .progressBox{padding:12px;border-top:1px solid var(--line);margin-top:8px}
+    .meter{height:10px;background:#8ed8f8;border-radius:999px;overflow:hidden;margin:8px 0}
+    .meter > span{display:block;height:100%;width:0;background:#00857e;transition:width .25s}
+    .muted{color:var(--muted);font-size:14px}
+    .content{display:grid;gap:18px}
+    section.panel{
+      display:none;background:#ffffff;border:2px solid #8ed8f8;border-top:7px solid #0073bc;border-radius:var(--radius);box-shadow:var(--shadow);padding:22px
+    }
+    section.panel.active{display:block}
+    .grid{display:grid;gap:14px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .card{
+      background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 6px 20px rgba(5,20,53,.06)
+    }
+    .callout{
+      border-radius:16px;padding:15px 16px;border:2px solid #29b7ea;background:#8ed8f8;color:#051435
+    }
+    .callout.warning{border-color:#fdc82f;background:#fdc82f;color:#051435}
+    .callout.good{border-color:#00857e;background:#ffffff;color:#003a65;border-left:10px solid #00857e}
+    label{font-weight:800;display:block;margin:12px 0 6px}
+    input[type="text"],select,textarea,input[type="number"]{
+      width:100%;border:2px solid #8ed8f8;border-radius:12px;padding:11px 12px;font:inherit;background:#fff;color:var(--ink)
+    }
+    textarea{min-height:92px;resize:vertical}
+    select{cursor:pointer}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0}
+    .chip{
+      display:inline-flex;align-items:center;gap:7px;border:2px solid #8ed8f8;border-radius:999px;background:#fff;padding:8px 11px;font-size:13px;font-weight:700;cursor:pointer;user-select:none
+    }
+    .chip input{margin:0}
+    .chip.selected{background:#003a65;border-color:#003a65;color:#ffffff}
+    .pill{display:inline-block;border-radius:999px;padding:5px 9px;background:#8ed8f8;color:#051435;font-size:12px;font-weight:800;margin:2px 4px 2px 0}
+    .topic-card{cursor:pointer;transition:.15s transform,.15s border-color,.15s background;min-height:130px;position:relative;overflow:hidden}
+    .topic-card::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:#0073bc}
+    .topic-card:nth-child(4n+2)::before{background:#00857e}
+    .topic-card:nth-child(4n+3)::before{background:#fdc82f}
+    .topic-card:nth-child(4n+4)::before{background:#29b7ea}
+    .choice-note{border-left:8px solid #fdc82f;padding:12px 14px;background:#ffffff;border-top:2px solid #fdc82f;border-right:2px solid #fdc82f;border-bottom:2px solid #fdc82f;border-radius:14px;margin:14px 0}
+    .concept-block{border-left:8px solid #00857e}
+    .support-block{border-left:8px solid #29b7ea}
+    .plan-options{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:14px 0}
+    .plan-options > div{flex:1;min-width:230px}
+    .support-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:8px}
+    .support-option{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:104px;padding:15px;text-align:left;background:#fff;color:#051435;border:2px solid #8ed8f8;border-radius:15px;box-shadow:none}
+    .support-option:hover{transform:translateY(-1px);border-color:#0073bc;background:#f4fbff}
+    .support-option.active{background:#003a65;color:#fff;border-color:#003a65;box-shadow:0 0 0 3px #8ed8f8}
+    .support-option strong{font-size:16px}
+    .support-option span{font-size:13px;line-height:1.35;font-weight:600;opacity:.92}
+    .section-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .topic-card:hover{transform:translateY(-2px);border-color:#0073bc;background:#ffffff}
+    .topic-card.active{border-color:#003a65;background:#8ed8f8;box-shadow:0 0 0 3px #003a65 inset}
+    .topic-card .tag{font-size:12px;font-weight:800;color:#0073bc;text-transform:uppercase;letter-spacing:.04em}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .bridge{display:grid;grid-template-columns:1fr 46px 1fr;gap:12px;align-items:stretch;margin:15px 0}
+    .bridge .side{border-radius:18px;border:1px solid var(--line);background:#fff;padding:16px;min-height:150px}
+    .bridge .arrow{display:flex;align-items:center;justify-content:center;color:#0073bc;font-size:30px;font-weight:900}
+    .output{
+      white-space:pre-wrap;background:#003a65;color:#ffffff;border-radius:16px;padding:16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.55;overflow:auto
+    }
+    .story-card{display:grid;grid-template-columns:90px 1fr;gap:12px;margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff}
+    .timebox{background:#8ed8f8;border:2px solid #0073bc;border-radius:14px;padding:10px;text-align:center;font-weight:900;color:#051435}
+    .timebox input{text-align:center;padding:8px;font-size:14px;margin-top:8px}
+    .scoreRow{display:grid;grid-template-columns:1fr 160px;gap:12px;align-items:center;margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}
+    input[type="range"]{width:100%}
+    .checkItem{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;padding:9px;border-bottom:1px solid #eef2f7}
+    .checkItem:last-child{border-bottom:none}
+    .checkItem input{width:18px;height:18px;margin-top:2px}
+    .status{
+      display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:7px 11px;font-weight:900;font-size:13px;background:#8ed8f8;color:#051435
+    }
+    .status.good{background:#00857e;color:#ffffff}
+    .status.warn{background:#fdc82f;color:#051435}
+    .status.bad{background:#da1a35;color:#ffffff}
+    .footer-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    details{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;margin:10px 0}
+    summary{font-weight:900;cursor:pointer}
+    .hide{display:none!important}
+    .mini{font-size:12px;color:var(--muted)}
+    .rubric-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
+    .rubric-grid .card{padding:13px}
+    .rubric-grid h4{font-size:14px}
+    .rubric-grid p{font-size:13px;color:var(--muted)}
+    .badge{display:inline-block;background:#29b7ea;color:#051435;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900}
+    @media(max-width:920px){
+      .hero,.layout,.split,.grid.two,.grid.three,.bridge{grid-template-columns:1fr}
+      nav{position:relative;top:auto}
+      .bridge .arrow{transform:rotate(90deg)}
+      .rubric-grid{grid-template-columns:1fr}
+    }
+    @media print{
+      header,nav,.footer-actions,.no-print{display:none!important}
+      main{padding:0}
+      section.panel{display:block!important;box-shadow:none;border:none;page-break-inside:avoid}
+      body{background:white}
+      .wrap{max-width:none}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <div>
+        <h1>Sociological Imagination Vlog Builder</h1>
+        <p class="subtitle">A guided simulator for planning a 5-minute reflective sociology vlog: choose one main topic, connect a personal example to wider society, apply at least three sociological concepts or theories, and shape a vlog plan that still leaves room for your own voice.</p>
+        <div class="toolbar">
+          <button class="ghost" onclick="showPanel('topic')">Start with topic</button>
+          <button class="ghost" onclick="showPanel('storyboard')">Structure vlog</button>
+          <button class="ghost" onclick="showPanel('final')">Generate plan</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <strong>What you will practise</strong>
+        <ul class="hero-list">
+          <li>Linking private troubles to public issues</li>
+          <li>Applying at least three sociological concepts or theories</li>
+          <li>Creating a clear beginning, middle and end</li>
+          <li>Planning references, visuals and engagement</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap layout">
+    <nav aria-label="Simulator sections">
+      <button class="nav-btn active" data-panel="overview" onclick="showPanel('overview')">1. Overview</button>
+      <button class="nav-btn" data-panel="topic" onclick="showPanel('topic')">2. Choose topic</button>
+      <button class="nav-btn" data-panel="build" onclick="showPanel('build')">3. Connect topic, concept and society</button>
+      <button class="nav-btn" data-panel="sentence" onclick="showPanel('sentence')">4. Check sentence</button>
+      <button class="nav-btn" data-panel="storyboard" onclick="showPanel('storyboard')">5. Vlog storyboard</button>
+      <button class="nav-btn" data-panel="criteria" onclick="showPanel('criteria')">6. Criteria check</button>
+      <button class="nav-btn" data-panel="final" onclick="showPanel('final')">7. My plan</button>
+      <div class="progressBox">
+        <strong>Readiness</strong>
+        <div class="meter"><span id="progressBar"></span></div>
+        <div id="progressText" class="muted">Complete the sections to build your plan.</div>
+      </div>
+      <div class="footer-actions no-print">
+        <button class="secondary small" onclick="saveWork()">Save</button>
+        <button class="secondary small" onclick="loadWork()">Load</button>
+        <button class="secondary small" onclick="resetWork()">Reset</button>
+      </div>
+    </nav>
+
+    <div class="content">
+      <section class="panel active" id="overview">
+        <h2>How this simulator works</h2>
+        <div class="callout good">
+          <strong>Main aim:</strong> help you avoid a purely personal story by building a clear link between micro-level experience and macro-level society.
+        </div>
+        <div class="grid three" style="margin-top:14px">
+          <div class="card">
+            <h3>1. Start with biography</h3>
+            <p>Choose one sociology topic and describe a personal, observed or everyday experience. Avoid sensitive details.</p>
+          </div>
+          <div class="card">
+            <h3>2. Connect to society</h3>
+            <p>Identify the wider social patterns, institutions, norms, inequalities or power relations that shape that experience.</p>
+          </div>
+          <div class="card">
+            <h3>3. Build the vlog</h3>
+            <p>Turn your chosen topic and micro–macro bridge into a flexible 5-minute outline. You can combine, rename, reorder or remove sections.</p>
+          </div>
+        </div>
+
+        <details open>
+          <summary>What sociological imagination means</summary>
+          <p style="margin-top:10px">Sociological imagination means looking at how personal experiences are connected to wider social forces. It asks: <strong>Is this only about me, or does it show something about society?</strong></p>
+          <div class="bridge">
+            <div class="side">
+              <h3>Micro level</h3>
+              <p>Individual experience, feelings, choices, family, friends, school, work, identity and everyday life.</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="side">
+              <h3>Macro level</h3>
+              <p>Social class, gender, race, institutions, culture, media, policy, economy, power and inequality.</p>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>Assessment reminders built into this simulator</summary>
+          <ul>
+            <li>Your vlog should be about 5 minutes long.</li>
+            <li>Your first slide should introduce you and your topic.</li>
+            <li>The video should be a personal reflection linked to wider society's influences.</li>
+            <li>You should use relevant key terms, theories and sociological language.</li>
+            <li>You should include references at the end and avoid sensitive, inappropriate or copyrighted material.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section class="panel" id="topic">
+        <h2>Choose a topic</h2>
+        <p class="muted">Choose <strong>one main topic</strong> for your vlog. The dropdown and topic cards are two ways of making the same single choice; choosing a different topic replaces your previous choice.</p>
+        <div class="choice-note"><strong>One topic only:</strong> you are not choosing three topics here. In Step 3, you will select three sociological concepts or theories that help you analyse this one topic.</div>
+        <label for="studentName">Name or initials <span class="mini">optional</span></label>
+        <input id="studentName" type="text" placeholder="e.g. A.S." oninput="updateAll()" />
+
+        <label for="topicSelect">Assessment topic</label>
+        <select id="topicSelect" onchange="selectTopic(this.value)"></select>
+
+        <div id="topicCards" class="grid three" style="margin-top:16px"></div>
+
+        <div class="split" style="margin-top:16px">
+          <div class="card">
+            <h3 id="topicTitle">Topic guide</h3>
+            <div id="topicGuide" class="muted">Choose a topic to begin.</div>
+          </div>
+          <div class="card">
+            <h3>Possible sociological ideas — not extra topics</h3>
+            <div id="conceptDisplay" class="chips"></div>
+            <p class="mini" style="margin-top:10px">These are analytical tools for your one chosen topic. In the next step, choose one main concept or theory and two further concepts or theories, giving you the minimum of three required for the vlog.</p>
+          </div>
+        </div>
+        <div class="footer-actions no-print">
+          <button onclick="showPanel('build')">Next: apply this topic</button>
+        </div>
+      </section>
+
+      <section class="panel" id="build">
+        <h2>Connect your topic, three concepts and society</h2>
+        <p class="muted">This section uses the one topic you chose in Step 2. You will select three sociological concepts or theories, then connect your personal example to wider society. One can be your main lens, but all three must be used meaningfully in the vlog.</p>
+        <div id="buildTopicSummary" class="callout good">Choose a topic first, then return here to build the bridge.</div>
+        <div class="callout warning" style="margin-top:14px">
+          <strong>Ethics reminder:</strong> do not include personally sensitive information, private information about other people, inappropriate language/images, or copyrighted material without permission.
+        </div>
+
+        <div class="grid two" style="margin-top:14px">
+          <div class="card">
+            <h3>A. My personal or everyday example for this topic</h3>
+            <label for="personalExample">What experience, observation or life event will you discuss?</label>
+            <textarea id="personalExample" placeholder="Example: I noticed that people from different backgrounds seemed to have different levels of confidence at school." oninput="updateAll()"></textarea>
+            <label for="microImpact">How did this affect you or people at the individual level?</label>
+            <textarea id="microImpact" placeholder="Think about feelings, choices, behaviour, identity, confidence, opportunities, relationships or decisions." oninput="updateAll()"></textarea>
+          </div>
+          <div class="card">
+            <h3>B. Wider social influences for this topic</h3>
+            <label>Which institutions or social settings are involved?</label>
+            <div id="mesoChips" class="chips"></div>
+            <label id="macroLabel">Which wider social forces are connected to your topic?</label>
+            <div id="macroChips" class="chips"></div>
+          </div>
+        </div>
+
+        <div class="card concept-block" style="margin-top:14px">
+          <h3>C. Concept or theory 1: choose your main lens</h3>
+          <p class="muted">Choose <strong>one concept or theory</strong> to act as your main analytical lens. You can explore this one in greatest depth, but it is the first of the three required sociological ideas.</p>
+          <div id="mainConceptChips" class="chips"></div>
+          <p id="mainConceptStatus" class="status warn" style="margin-top:12px">Choose concept or theory 1</p>
+        </div>
+
+        <div class="card support-block" style="margin-top:14px">
+          <h3>D. Concepts or theories 2 and 3: choose two more</h3>
+          <p class="muted">Select <strong>two additional concepts or theories</strong>. These are required so that your vlog uses at least three sociological ideas overall. They do not need exactly the same amount of time as your main lens, but each should be explained and applied rather than simply named.</p>
+          <div id="supportConceptChips" class="chips"></div>
+          <p id="supportConceptStatus" class="status warn" style="margin-top:12px">0 of 2 additional concepts selected</p>
+        </div>
+
+        <div class="grid two" style="margin-top:14px">
+          <div class="card">
+            <h3>E. Evidence and references</h3>
+            <label for="evidencePlan">What academic source, class reading, statistic or example could support this?</label>
+            <textarea id="evidencePlan" placeholder="Example: A textbook chapter on education and class; a reading about gender socialisation; a source on media representation." oninput="updateAll()"></textarea>
+          </div>
+          <div class="card">
+            <h3>F. My argument</h3>
+            <label for="mainArgument">What is the main point your vlog will make?</label>
+            <textarea id="mainArgument" placeholder="Example: My experience shows that educational success is not only about individual effort; it is shaped by class, family expectations and school culture." oninput="updateAll()"></textarea>
+          </div>
+        </div>
+
+        <div class="footer-actions no-print">
+          <button onclick="generateBridgeSentence()">Generate sociological imagination sentence</button>
+          <button class="secondary" onclick="showPanel('sentence')">Next: check sentence</button>
+        </div>
+        <div id="bridgeOutput" class="output" style="margin-top:14px">Your sociological imagination sentence will appear here.</div>
+      </section>
+
+      <section class="panel" id="sentence">
+        <h2>“Is this sociology yet?” checker</h2>
+        <p class="muted">Paste a sentence from your vlog plan, or use the sentence generated in Step 3. This helps you check the quality of the micro–macro link before you build the storyboard.</p>
+        <label for="sentenceInput">Sentence to check</label>
+        <textarea id="sentenceInput" placeholder="Example: I felt pressure to succeed at school because everyone expected university to lead to a better future."></textarea>
+        <div class="footer-actions no-print">
+          <button onclick="checkSentence()">Check sentence</button>
+          <button class="secondary" onclick="insertGeneratedSentence()">Use generated bridge sentence</button>
+          <button class="secondary" onclick="showPanel('storyboard')">Next: build storyboard</button>
+        </div>
+        <div id="sentenceFeedback" class="card" style="margin-top:14px">
+          <h3>Feedback will appear here</h3>
+          <p class="muted">The checker looks for a personal example, wider social forces and clearly applied sociological language. Your complete vlog must use at least three concepts or theories.</p>
+        </div>
+        <div class="grid three" style="margin-top:14px">
+          <div class="card">
+            <span class="badge">Level 1</span>
+            <h3>Personal story only</h3>
+            <p>“I found school stressful.”</p>
+            <p class="muted">Needs a wider social link.</p>
+          </div>
+          <div class="card">
+            <span class="badge">Level 2</span>
+            <h3>Personal + social issue</h3>
+            <p>“I found school stressful because there is pressure to succeed.”</p>
+            <p class="muted">Needs a concept or theory.</p>
+          </div>
+          <div class="card">
+            <span class="badge">Level 3</span>
+            <h3>Sociological imagination</h3>
+            <p>“School stress can be linked to meritocracy, class mobility and educational inequality.”</p>
+            <p class="muted">Connects biography to society.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="storyboard">
+        <h2>Shape your 5-minute vlog</h2>
+        <p class="muted">Use this as a planning space, not a compulsory script or slide order. Your vlog may be continuous speech, voiceover, several slides or another suitable format.</p>
+        <div class="callout">
+          <strong>You stay in control:</strong> combine sections, rename them, change the order, remove anything that does not suit your story, or add your own section. What matters is a clear beginning, sociological analysis and a reflective ending.
+        </div>
+        <div class="plan-options">
+          <div style="flex-basis:100%">
+            <label>How much planning support would you like?</label>
+            <input type="hidden" id="structureMode" value="flexible">
+            <div class="support-options" role="group" aria-label="Planning support level">
+              <button type="button" class="support-option active" data-mode="flexible" aria-pressed="true" onclick="setStructureMode('flexible')">
+                <strong>Light-touch outline</strong>
+                <span>5 broad sections and short prompts</span>
+              </button>
+              <button type="button" class="support-option" data-mode="detailed" aria-pressed="false" onclick="setStructureMode('detailed')">
+                <strong>Detailed prompts</strong>
+                <span>8 guided sections, including all 3 concepts</span>
+              </button>
+              <button type="button" class="support-option" data-mode="blank" aria-pressed="false" onclick="setStructureMode('blank')">
+                <strong>Mostly blank plan</strong>
+                <span>3 empty sections for independent planning</span>
+              </button>
+            </div>
+          </div>
+          <div class="callout" style="flex:1;min-width:260px"><strong>Selecting a level immediately rebuilds the storyboard below.</strong> You can still edit every title, prompt and timing.</div>
+        </div>
+        <div id="structureModeNote" class="choice-note">Light-touch support: five broad sections with short prompts and plenty of space for your own structure.</div>
+        <div id="timeStatus" class="status warn" style="margin-top:12px">Total: 0 seconds</div>
+        <div id="storyboardCards"></div>
+        <div class="footer-actions no-print">
+          <button id="autoFillButton" onclick="autoFillStoryboard()">Use my answers in this plan</button>
+          <button class="secondary" onclick="addStoryboardCard()">Add extra section</button>
+          <button class="secondary" onclick="showPanel('criteria')">Next: criteria check</button>
+        </div>
+      </section>
+
+      <section class="panel" id="criteria">
+        <h2>Check against the criteria</h2>
+        <p class="muted">This is formative feedback only. It does not predict a mark. It helps you see which areas need attention before submission.</p>
+
+        <div class="rubric-grid">
+          <div class="card"><h4>Task & sociology</h4><p>Clear focus, personal-to-social link, key terms, theories.</p></div>
+          <div class="card"><h4>Depth & support</h4><p>Analysis, explanation, evidence, research, examples.</p></div>
+          <div class="card"><h4>Organisation</h4><p>Beginning, middle, end, clear narrative and transitions.</p></div>
+          <div class="card"><h4>Referencing</h4><p>Sources acknowledged, Harvard-style reference list.</p></div>
+          <div class="card"><h4>Presentation</h4><p>Engaging, creative, clear visuals, copyright-aware, time limit.</p></div>
+        </div>
+
+        <h3 style="margin-top:20px">Self-assessment sliders</h3>
+        <p class="muted">Move these sliders yourself. They are a reflection tool, not an automatic grade. Use them to judge how ready your plan feels in each marking area.</p>
+        <div id="rubricSliders"></div>
+
+        <h3 style="margin-top:20px">Assignment checklist</h3>
+        <div class="card" id="checklist"></div>
+
+        <div id="criteriaFeedback" class="callout" style="margin-top:14px">Complete the self-assessment sliders and checklist to receive formative feedback.</div>
+        <div class="footer-actions no-print">
+          <button onclick="updateAll()">Update feedback</button>
+          <button class="secondary" onclick="showPanel('final')">Next: generate plan</button>
+        </div>
+      </section>
+
+      <section class="panel" id="final">
+        <h2>Generate my vlog plan</h2>
+        <p class="muted">Use this as a planning outline. Write the final script in your own voice and include your own references.</p>
+        <div class="footer-actions no-print">
+          <button onclick="generateFinalPlan()">Generate / refresh plan</button>
+          <button class="secondary" onclick="copyPlan()">Copy plan</button>
+          <button class="secondary" onclick="downloadPlan()">Download .txt</button>
+          <button class="secondary" onclick="window.print()">Print / save PDF</button>
+        </div>
+        <div id="finalPlan" class="output" style="margin-top:14px">Your final plan will appear here.</div>
+      </section>
+    </div>
+  </main>
+
+<script>
+const topicData = {
+  "gender-studies": {
+    title:"Gender studies",
+    tag:"Identity & power",
+    guide:"Explore how gender expectations shape behaviour, identity, opportunities and relationships. Move from a personal example of gendered expectation to wider patterns of socialisation and power.",
+    concepts:["gender roles", "patriarchy", "feminism", "socialisation", "stereotypes", "gender norms", "masculinity", "femininity", "intersectionality"],
+    macro:["gender norms", "family expectations", "media representation", "workplace inequality", "education", "patriarchy", "culture", "religion"],
+    prompts:["What gender expectation have you noticed?", "Where did it come from?", "Who benefits and who is limited by it?"],
+    example:"Using sociological imagination, a personal experience of gender expectation can be linked to wider gender norms, socialisation and unequal power relations in society."
+  },
+  "family-socialisation": {
+    title:"Family and socialisation",
+    tag:"Institutions",
+    guide:"Focus on how family shapes values, norms, identity, behaviour and life chances. Link personal family experiences to primary socialisation, culture and wider social expectations.",
+    concepts:["primary socialisation", "norms", "values", "family diversity", "gender roles", "culture", "agents of socialisation", "role models", "patriarchy"],
+    macro:["family structures", "cultural expectations", "gender roles", "class", "religion", "education", "work", "care responsibilities"],
+    prompts:["What values did family teach?", "How did family expectations shape choices?", "How does this connect to culture or institutions?"],
+    example:"Using sociological imagination, family experiences can be seen as part of wider processes of socialisation, where norms and values are passed on through institutions and culture."
+  },
+  "crime-deviance": {
+    title:"Crime and deviance",
+    tag:"Rules & control",
+    guide:"Examine how behaviour becomes labelled as deviant, how rules are enforced, and whether all groups are treated equally. Link personal observation to labelling, social control, stigma or inequality.",
+    concepts:["deviance", "labelling", "social control", "stigma", "moral panic", "surveillance", "power", "policing", "norms"],
+    macro:["law", "policing", "media", "class inequality", "race and ethnicity", "age", "community", "power", "state control"],
+    prompts:["What behaviour is judged as deviant?", "Who labels it that way?", "Are all groups treated equally?"],
+    example:"Using sociological imagination, an experience of being judged or labelled can be connected to wider processes of social control, stigma and unequal power in society."
+  },
+  "education": {
+    title:"Education",
+    tag:"Opportunity",
+    guide:"Connect school, college or university experiences to social class, achievement, expectations and opportunity. Move beyond individual effort to think about structure and inequality.",
+    concepts:["meritocracy", "cultural capital", "hidden curriculum", "labelling", "social mobility", "class inequality", "achievement", "socialisation", "role allocation"],
+    macro:["education system", "social class", "family resources", "school culture", "policy", "labour market", "inequality", "teacher expectations"],
+    prompts:["What educational experience shaped you?", "Was it about confidence, opportunity, pressure or expectations?", "How might class, school or policy matter?"],
+    example:"Using sociological imagination, an educational experience can be understood not only as individual success or struggle, but as shaped by class, cultural capital, school expectations and wider inequality."
+  },
+  "health": {
+    title:"Health",
+    tag:"Bodies & society",
+    guide:"Show how health is shaped by social context, not only individual choices. Link personal or observed experiences to inequality, stigma, access, environment or social determinants of health.",
+    concepts:["social determinants of health", "health inequality", "stigma", "medicalisation", "social class", "access", "lifestyle", "mental health", "disability"],
+    macro:["healthcare access", "income", "housing", "work", "education", "stigma", "environment", "policy", "culture"],
+    prompts:["What health issue or health choice will you discuss?", "What social conditions shaped it?", "How do resources or stigma affect health?"],
+    example:"Using sociological imagination, a health experience can be linked to wider social determinants such as class, housing, work, access to healthcare, stigma and inequality."
+  },
+  "stratification": {
+    title:"Stratification systems",
+    tag:"Inequality",
+    guide:"Explore how society ranks people by class, status, wealth, gender, ethnicity or other divisions. Link individual opportunity to wider patterns of inequality and power.",
+    concepts:["social class", "status", "power", "wealth", "income", "social mobility", "life chances", "inequality", "capital"],
+    macro:["class system", "wealth inequality", "education", "employment", "housing", "family background", "race and ethnicity", "gender", "global inequality"],
+    prompts:["What unequal opportunity have you noticed?", "Who has more resources?", "How does this affect life chances?"],
+    example:"Using sociological imagination, differences in opportunity can be understood as part of wider stratification systems that distribute wealth, status, power and life chances unequally."
+  },
+  "identity": {
+    title:"Identity",
+    tag:"Self & society",
+    guide:"Look at how identity is formed through interaction, culture, family, media, class, gender, ethnicity, religion and place. Link personal identity to social categories and belonging.",
+    concepts:["social identity", "self", "interactionism", "roles", "status", "culture", "ethnicity", "gender", "belonging", "intersectionality"],
+    macro:["culture", "family", "media", "ethnicity", "gender", "class", "religion", "nation", "community", "migration"],
+    prompts:["Which part of identity will you discuss?", "Does your identity change in different settings?", "How do social groups shape belonging?"],
+    example:"Using sociological imagination, identity can be understood as both personal and social, shaped by interactions, culture, institutions and wider categories such as class, gender and ethnicity."
+  },
+  "media": {
+    title:"Media",
+    tag:"Representation",
+    guide:"Analyse how media shapes views of self, others and society. Link personal media use to representation, stereotypes, moral panic, consumer culture or identity formation.",
+    concepts:["representation", "stereotypes", "moral panic", "media effects", "consumer culture", "identity", "social media", "power", "agenda-setting"],
+    macro:["media industries", "social media platforms", "advertising", "consumer culture", "gender norms", "race and ethnicity", "class", "body image", "politics"],
+    prompts:["What media example influenced you?", "What message did it communicate?", "Who is represented and who is excluded?"],
+    example:"Using sociological imagination, personal media experiences can be linked to wider patterns of representation, consumer culture, identity formation and power."
+  },
+  "research-methods": {
+    title:"Research methods",
+    tag:"Evidence",
+    guide:"Use this topic to reflect on how sociologists gather evidence and how research can challenge personal assumptions. Link personal views to methods, ethics, bias and validity.",
+    concepts:["quantitative research", "qualitative research", "validity", "reliability", "ethics", "bias", "representativeness", "positivism", "interpretivism"],
+    macro:["evidence", "research ethics", "policy", "public opinion", "media claims", "institutions", "power", "data", "social patterns"],
+    prompts:["What assumption changed after looking at evidence?", "What method would investigate it?", "What ethical issues might arise?"],
+    example:"Using sociological imagination, research methods show how personal assumptions can be tested against evidence about wider social patterns and group experiences."
+  },
+  "perspectives": {
+    title:"Sociological perspectives",
+    tag:"Theory",
+    guide:"Use contrasting perspectives to explain the same personal experience. For example, functionalism may focus on social order, conflict theory on inequality, feminism on gender power, and interactionism on meaning.",
+    concepts:["functionalism", "Marxism", "conflict theory", "feminism", "interactionism", "consensus", "conflict", "power", "social order", "meaning"],
+    macro:["social order", "inequality", "capitalism", "patriarchy", "institutions", "interaction", "culture", "power", "social change"],
+    prompts:["Which experience could be explained in different ways?", "What would each theory notice?", "Which theory gives the strongest explanation?"],
+    example:"Using sociological imagination, sociological perspectives help explain how one personal experience can be interpreted through wider issues of social order, conflict, power, inequality and meaning."
+  }
+};
+
+const mesoOptions = ["family", "friends/peers", "school/college", "work", "community", "media", "religion", "healthcare", "police/law", "government/policy"];
+const flexibleStoryboard = [
+  {time:35,title:"Opening",prompt:"Introduce yourself, your one chosen topic and the personal or observed example you will explore.",visual:"Choose an opening that suits your style: title, image, question, short quotation or direct-to-camera introduction."},
+  {time:55,title:"The experience and its context",prompt:"Explain the example and the individual-level effects. Begin showing why it is connected to more than one person's choices or feelings.",visual:"Use only visuals that genuinely help the audience understand the example."},
+  {time:85,title:"Main sociological analysis",prompt:"Build the micro–macro link and apply your main concept or theory in depth.",visual:"A concept definition, key words, diagram or evidence may help."},
+  {time:70,title:"Develop the analysis with concepts 2 and 3",prompt:"Apply your other two required concepts or theories. Use them to add another explanation, comparison, challenge or layer of analysis.",visual:"Possible evidence, comparison, contrasting perspective or short example."},
+  {time:45,title:"Closing reflection and references",prompt:"Bring the three ideas together, summarise what sociological imagination helped you understand, and include your references.",visual:"Final takeaway and reference list."}
+];
+
+const detailedStoryboard = [
+  {time:30,title:"Introduction",prompt:"Introduce yourself, your one chosen topic and the question your vlog will explore.",visual:"Name, topic and one key question."},
+  {time:35,title:"Personal or observed example",prompt:"Explain the experience without including sensitive details.",visual:"Timeline, mind-map, image or a few key words."},
+  {time:35,title:"Micro–macro connection",prompt:"Explain the individual-level effects, then connect them to wider social forces, institutions, norms, culture, power or inequality.",visual:"Micro–macro key words or a simple diagram."},
+  {time:50,title:"Concept or theory 1",prompt:"Define and apply your main sociological lens. Show exactly how it helps explain the experience.",visual:"Definition, application and a short example."},
+  {time:40,title:"Concept or theory 2",prompt:"Explain and apply your second sociological idea. Show what it adds to the analysis.",visual:"A second angle, comparison or piece of evidence."},
+  {time:40,title:"Concept or theory 3",prompt:"Explain and apply your third sociological idea. Show whether it supports, develops or challenges the earlier explanation.",visual:"A third angle, comparison or example."},
+  {time:30,title:"Synthesis, evidence and references",prompt:"Bring the three ideas together and support the argument with an academic source, class reading, statistic or credible example.",visual:"Short citation; full reference at the end."},
+  {time:20,title:"Conclusion and reflection",prompt:"Summarise what sociological imagination helped you understand and show your references.",visual:"Final takeaway and reference list."}
+];
+
+const blankStoryboard = [
+  {time:60,title:"My opening",prompt:"",visual:""},
+  {time:180,title:"My main content",prompt:"",visual:""},
+  {time:60,title:"My ending",prompt:"",visual:""}
+];
+
+const defaultStoryboard = flexibleStoryboard;
+
+const rubricItems = [
+  {id:"task",label:"Task and sociological understanding",hint:"The vlog clearly links personal experience to wider society and uses sociological concepts."},
+  {id:"depth",label:"Depth and support",hint:"The argument explains, analyses and uses examples/evidence rather than only describing."},
+  {id:"org",label:"Organisation",hint:"There is a clear beginning, middle and end with logical transitions."},
+  {id:"ref",label:"Referencing",hint:"Sources are acknowledged and a Harvard-style reference list is included."},
+  {id:"pres",label:"Presentation and engagement",hint:"The vlog is clear, creative, engaging, copyright-aware and close to 5 minutes."}
+];
+
+const checklistItems = [
+  "I have introduced myself.",
+  "My video has a clear beginning, middle and end.",
+  "Across my vlog, I have explained and applied at least three relevant sociological concepts or theories.",
+  "I have included relevant examples.",
+  "I have demonstrated the link between private and social perspectives.",
+  "I have included relevant sociological language.",
+  "My video meets the 5-minute time limit requirement.",
+  "I have included references at the end of the video.",
+  "I know how I will upload the video to Canvas.",
+  "My vlog has relevant content, answers the brief and is engaging to watch."
+];
+
+let selectedTopic = "gender-studies";
+let storyboard = JSON.parse(JSON.stringify(defaultStoryboard));
+let structureMode = "flexible";
+
+function $(id){return document.getElementById(id)}
+function slugToTitle(slug){return topicData[slug]?.title || ""}
+function getSelectedChips(name){return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(x=>x.value)}
+function setChipStyle(container){
+  Array.from(container.querySelectorAll('.chip')).forEach(chip=>{
+    const input = chip.querySelector('input');
+    chip.classList.toggle('selected', input && input.checked);
+  });
+}
+function makeChip(name,value,checked=false,type="checkbox",onChange=null){
+  const label=document.createElement('label');
+  label.className='chip';
+  label.innerHTML=`<input type="${type}" name="${name}" value="${escapeHtml(value)}" ${checked?'checked':''}> ${escapeHtml(value)}`;
+  const input=label.querySelector('input');
+  input.addEventListener('change',()=>{
+    setChipStyle(label.parentElement);
+    if(onChange) onChange(input);
+    updateAll();
+  });
+  return label;
+}
+function getMainConcept(){
+  return document.querySelector('input[name="mainConcept"]:checked')?.value || '';
+}
+function getSupportingConcepts(){
+  return getSelectedChips('supportConcept');
+}
+function getAllConcepts(){
+  return [getMainConcept(), ...getSupportingConcepts()].filter(Boolean);
+}
+function handleMainConceptChange(){
+  const main=getMainConcept();
+  document.querySelectorAll('input[name="supportConcept"]').forEach(input=>{
+    if(input.value===main){ input.checked=false; input.disabled=true; input.closest('.chip')?.classList.remove('selected'); }
+    else input.disabled=false;
+  });
+  const supportBox=$('supportConceptChips');
+  if(supportBox) setChipStyle(supportBox);
+}
+function handleSupportingConceptChange(changedInput){
+  const selected=getSupportingConcepts();
+  if(selected.length>2){
+    changedInput.checked=false;
+    alert('Choose two additional concepts or theories here. Together with your main lens, this gives you the three required ideas.');
+  }
+  const supportBox=$('supportConceptChips');
+  if(supportBox) setChipStyle(supportBox);
+}
+function escapeHtml(str){
+  return String(str || '').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+}
+function normaliseText(str, fallback){
+  return String(str || '').replace(/\s+/g,' ').trim() || fallback;
+}
+function joinList(items, fallback){
+  const vals = (items || []).filter(Boolean);
+  if(!vals.length) return fallback;
+  if(vals.length === 1) return vals[0];
+  if(vals.length === 2) return `${vals[0]} and ${vals[1]}`;
+  return `${vals.slice(0,-1).join(', ')} and ${vals[vals.length-1]}`;
+}
+
+function initialise(){
+  const select=$('topicSelect');
+  select.innerHTML = Object.entries(topicData).map(([slug,t])=>`<option value="${slug}">${t.title}</option>`).join('');
+  const cards=$('topicCards');
+  cards.innerHTML='';
+  Object.entries(topicData).forEach(([slug,t])=>{
+    const div=document.createElement('div');
+    div.className='card topic-card';
+    div.dataset.slug=slug;
+    div.setAttribute('role','button');
+    div.setAttribute('tabindex','0');
+    div.setAttribute('aria-pressed','false');
+    div.innerHTML=`<div class="tag">${escapeHtml(t.tag)}</div><h3>${escapeHtml(t.title)}</h3><p class="muted">${escapeHtml(t.guide.slice(0,125))}${t.guide.length>125?'…':''}</p>`;
+    div.onclick=()=>selectTopic(slug);
+    div.onkeydown=e=>{if(e.key==='Enter' || e.key===' '){e.preventDefault();selectTopic(slug);}};
+    cards.appendChild(div);
+  });
+  renderChips();
+  renderStoryboard();
+  renderRubric();
+  renderChecklist();
+  selectTopic(selectedTopic);
+  updateStructureModeNote();
+  loadWork(false);
+  updateAll();
+}
+
+function selectTopic(slug){
+  if(!topicData[slug]) slug = "gender-studies";
+  selectedTopic = slug;
+  $('topicSelect').value=slug;
+  const t=topicData[slug];
+  $('topicTitle').textContent=`Your one main topic: ${t.title}`;
+  $('topicGuide').innerHTML=`<p>${escapeHtml(t.guide)}</p><p><strong>Prompt questions:</strong></p><ul>${t.prompts.map(p=>`<li>${escapeHtml(p)}</li>`).join('')}</ul><p><strong>Example bridge sentence:</strong> ${escapeHtml(t.example)}</p>`;
+  Array.from(document.querySelectorAll('.topic-card')).forEach(card=>{
+    const active=card.dataset.slug===slug;
+    card.classList.toggle('active',active);
+    card.setAttribute('aria-pressed',String(active));
+  });
+  renderChips();
+  updateBuildTopicSummary();
+  updateAll();
+}
+
+function updateBuildTopicSummary(){
+  const t = topicData[selectedTopic];
+  if(!t || !$('buildTopicSummary')) return;
+  const conceptPreview = t.concepts.slice(0,6).map(c=>`<span class="pill">${escapeHtml(c)}</span>`).join('');
+  const macroPreview = t.macro.slice(0,6).map(m=>`<span class="pill">${escapeHtml(m)}</span>`).join('');
+  $('buildTopicSummary').innerHTML = `
+    <strong>You are applying sociological imagination to: ${escapeHtml(t.title)}</strong>
+    <p style="margin-top:8px">${escapeHtml(t.guide)}</p>
+    <p><strong>Use these questions to shape your personal example:</strong></p>
+    <ul>${t.prompts.map(p=>`<li>${escapeHtml(p)}</li>`).join('')}</ul>
+    <p><strong>Possible analytical ideas — not extra topics:</strong><br>${conceptPreview}</p>
+    <p><strong>Possible wider social links:</strong><br>${macroPreview}</p>`;
+  if($('macroLabel')) $('macroLabel').textContent = `Which wider social forces are connected to ${t.title.toLowerCase()}?`;
+}
+
+function renderChips(){
+  const t=topicData[selectedTopic];
+  $('conceptDisplay').innerHTML = t.concepts.map(c=>`<span class="pill">${escapeHtml(c)}</span>`).join('');
+  const meso=$('mesoChips');
+  meso.innerHTML='';
+  mesoOptions.forEach(x=>meso.appendChild(makeChip('meso',x)));
+  setChipStyle(meso);
+  const macro=$('macroChips');
+  macro.innerHTML='';
+  t.macro.forEach(x=>macro.appendChild(makeChip('macro',x)));
+  setChipStyle(macro);
+  const mainConcepts=$('mainConceptChips');
+  mainConcepts.innerHTML='';
+  t.concepts.forEach(x=>mainConcepts.appendChild(makeChip('mainConcept',x,false,'radio',handleMainConceptChange)));
+  setChipStyle(mainConcepts);
+  const supportConcepts=$('supportConceptChips');
+  supportConcepts.innerHTML='';
+  t.concepts.forEach(x=>supportConcepts.appendChild(makeChip('supportConcept',x,false,'checkbox',handleSupportingConceptChange)));
+  setChipStyle(supportConcepts);
+}
+
+function showPanel(id){
+  document.querySelectorAll('section.panel').forEach(s=>s.classList.toggle('active',s.id===id));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.panel===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='final') generateFinalPlan();
+}
+
+function generateBridgeSentence(){
+  const personal = normaliseText($('personalExample').value, '[add your personal or observed example]');
+  const micro = normaliseText($('microImpact').value, '[add the individual-level effects]');
+  const macros = getSelectedChips('macro');
+  const mainConcept = getMainConcept();
+  const supporting = getSupportingConcepts();
+  const topic = slugToTitle(selectedTopic);
+  const macroText = joinList(macros.slice(0,5), '[add wider social forces]');
+  const argument = normaliseText($('mainArgument').value, '');
+  const mainSentence = mainConcept
+    ? `My main sociological lens is ${mainConcept}, which I will use to explain how this personal experience is shaped by wider society.`
+    : `I still need to choose my main sociological concept or theory.`;
+  const supportSentence = supporting.length === 2
+    ? ` I will also apply ${joinList(supporting, '')}, so that the vlog uses three sociological concepts or theories in total.`
+    : supporting.length === 1
+      ? ` I will also apply ${supporting[0]}, but I still need to choose one more concept or theory to meet the minimum of three.`
+      : ` I still need to choose two additional concepts or theories to meet the minimum of three.`;
+  const argumentSentence = argument ? ` My main argument is: ${argument.replace(/[.!?]+$/,'')}.` : '';
+  const personalClean=personal.replace(/[.!?]+$/,'');
+  const microClean=micro.replace(/[.!?]+$/,'');
+  const sentence = `Using sociological imagination, I will explore ${topic.toLowerCase()} through this personal or observed example: “${personalClean}”. At the micro level, this involves ${microClean}. At the macro level, it connects to wider social influences such as ${macroText}. ${mainSentence}${supportSentence}${argumentSentence}`;
+  $('bridgeOutput').textContent = sentence;
+  updateAll();
+  return sentence;
+}
+
+function checkSentence(){
+  const s=$('sentenceInput').value.toLowerCase();
+  const personalWords=["i ","my ","me ","family","friend","school","experience","felt","noticed","community","home","work"];
+  const macroWords=["society","social","class","gender","race","ethnicity","inequality","power","institution","culture","media","policy","economy","patriarchy","capitalism","education system","family","healthcare","stigma"];
+  const conceptWords=Object.values(topicData).flatMap(t=>t.concepts).map(x=>x.toLowerCase());
+  const hasPersonal=personalWords.some(w=>s.includes(w));
+  const macroHits=macroWords.filter(w=>s.includes(w));
+  const conceptHits=[...new Set(conceptWords.filter(w=>s.includes(w)))].slice(0,6);
+  let level=1, cls="bad", title="Level 1: personal story only";
+  let advice="This sounds mainly personal. Add a wider social force, institution, norm, pattern or inequality.";
+  if(hasPersonal && macroHits.length){level=2; cls="warn"; title="Level 2: personal experience plus social issue"; advice="This is moving towards sociological imagination. Strengthen it by adding a sociological concept or theory and explaining how it applies.";}
+  if((hasPersonal || s.includes("individual")) && macroHits.length && conceptHits.length){level=3; cls="good"; title="Level 3: clear sociological imagination"; advice="This is strong because it links biography to wider society and uses sociological language. Now support it with evidence or a reference.";}
+  if(!s.trim()){title="Add a sentence first"; advice="Paste or type one sentence from your vlog plan."; cls="warn";}
+  $('sentenceFeedback').innerHTML = `<h3><span class="status ${cls}">${title}</span></h3><p>${escapeHtml(advice)}</p><p class="muted"><strong>Detected wider links:</strong> ${macroHits.length?macroHits.join(', '):'none yet'}<br><strong>Detected concepts:</strong> ${conceptHits.length?conceptHits.join(', '):'none yet'}</p>`;
+}
+
+function insertGeneratedSentence(){
+  const text=$('bridgeOutput').textContent.includes('Your sociological') ? generateBridgeSentence() : $('bridgeOutput').textContent;
+  $('sentenceInput').value=text;
+  checkSentence();
+}
+
+function renderStoryboard(){
+  const box=$('storyboardCards');
+  box.innerHTML='';
+  storyboard.forEach((slide,idx)=>{
+    const div=document.createElement('div');
+    div.className='story-card';
+    div.innerHTML=`
+      <div class="timebox">Section ${idx+1}<input type="number" min="5" max="180" value="${slide.time}" aria-label="Seconds for section ${idx+1}"><span class="mini">seconds</span></div>
+      <div>
+        <label>Section title</label><input type="text" value="${escapeHtml(slide.title)}">
+        <label>What I will say</label><textarea>${escapeHtml(slide.prompt)}</textarea>
+        <label>Visual / media idea</label><input type="text" value="${escapeHtml(slide.visual)}">
+        <div class="section-controls no-print">
+          <button class="secondary small" onclick="moveStoryboardCard(${idx},-1)" ${idx===0?'disabled':''}>Move up</button>
+          <button class="secondary small" onclick="moveStoryboardCard(${idx},1)" ${idx===storyboard.length-1?'disabled':''}>Move down</button>
+          <button class="secondary small" onclick="removeStoryboardCard(${idx})">Remove section</button>
+        </div>
+      </div>`;
+    const inputs=div.querySelectorAll('input,textarea');
+    inputs[0].addEventListener('input',e=>{storyboard[idx].time=Number(e.target.value)||0; updateAll();});
+    inputs[1].addEventListener('input',e=>{storyboard[idx].title=e.target.value; updateAll();});
+    inputs[2].addEventListener('input',e=>{storyboard[idx].prompt=e.target.value; updateAll();});
+    inputs[3].addEventListener('input',e=>{storyboard[idx].visual=e.target.value; updateAll();});
+    box.appendChild(div);
+  });
+  updateTimeStatus();
+}
+function addStoryboardCard(){
+  storyboard.push({time:30,title:"Additional section",prompt:"Add a point that supports your argument or helps the audience follow your story.",visual:"Use a visual only if it adds meaning."});
+  renderStoryboard(); updateAll();
+}
+function removeStoryboardCard(idx){
+  storyboard.splice(idx,1);
+  renderStoryboard(); updateAll();
+}
+function moveStoryboardCard(idx,delta){
+  const next=idx+delta;
+  if(next<0 || next>=storyboard.length) return;
+  [storyboard[idx],storyboard[next]]=[storyboard[next],storyboard[idx]];
+  renderStoryboard(); updateAll();
+}
+function updateStructureModeNote(){
+  const mode=$('structureMode')?.value || structureMode || 'flexible';
+  const notes={
+    flexible:'<strong>Light-touch support:</strong> five broad sections with short prompts. This gives you direction but leaves plenty of room to shape your own sequence and style.',
+    detailed:'<strong>Detailed support:</strong> eight guided sections, including separate prompts for concepts or theories 1, 2 and 3, plus evidence and reflection.',
+    blank:'<strong>Independent planning:</strong> three mostly blank sections with no suggested wording. You decide how to organise the opening, main content and ending.'
+  };
+  if($('structureModeNote')) $('structureModeNote').innerHTML=notes[mode];
+  const labels={flexible:'Use my answers in the light-touch plan',detailed:'Use my answers in the detailed plan',blank:'Reset to a mostly blank plan'};
+  if($('autoFillButton')) $('autoFillButton').textContent=labels[mode];
+  document.querySelectorAll('.support-option').forEach(button=>{
+    const active=button.dataset.mode===mode;
+    button.classList.toggle('active',active);
+    button.setAttribute('aria-pressed',String(active));
+  });
+}
+function setStructureMode(newMode){
+  const templates={flexible:flexibleStoryboard,detailed:detailedStoryboard,blank:blankStoryboard};
+  if(!templates[newMode]) newMode='flexible';
+  structureMode=newMode;
+  if($('structureMode')) $('structureMode').value=newMode;
+  storyboard=JSON.parse(JSON.stringify(templates[newMode]));
+  updateStructureModeNote();
+  renderStoryboard();
+  updateAll();
+}
+function changeStructureMode(){
+  setStructureMode($('structureMode')?.value || 'flexible');
+}
+function applyStoryboardMode(){
+  structureMode=$('structureMode')?.value || 'flexible';
+  const templates={flexible:flexibleStoryboard,detailed:detailedStoryboard,blank:blankStoryboard};
+  storyboard=JSON.parse(JSON.stringify(templates[structureMode] || flexibleStoryboard));
+  updateStructureModeNote();
+  renderStoryboard();
+  updateAll();
+}
+function updateTimeStatus(){
+  const total=storyboard.reduce((sum,s)=>sum+(Number(s.time)||0),0);
+  const status=$('timeStatus');
+  let cls='warn', msg=`Total: ${total} seconds (${Math.floor(total/60)}:${String(total%60).padStart(2,'0')})`;
+  if(total>=270 && total<=300){cls='good'; msg += ' — close to the 5-minute limit';}
+  else if(total>300){cls='bad'; msg += ' — reduce content to stay within 5 minutes';}
+  else {msg += ' — you may have room to develop analysis';}
+  status.className=`status ${cls}`;
+  status.textContent=msg;
+}
+function autoFillStoryboard(){
+  const topic=slugToTitle(selectedTopic);
+  const personal=normaliseText($('personalExample').value, 'your personal or observed example');
+  const micro=normaliseText($('microImpact').value, 'the individual-level effects');
+  const macros=joinList(getSelectedChips('macro').slice(0,4), 'wider social influences');
+  const mainConcept=getMainConcept() || '[choose concept or theory 1]';
+  const supports=getSupportingConcepts();
+  const concept2=supports[0] || '[choose concept or theory 2]';
+  const concept3=supports[1] || '[choose concept or theory 3]';
+  const evidence=normaliseText($('evidencePlan').value, 'a relevant academic source or class reading');
+  const mode=$('structureMode')?.value || structureMode || 'flexible';
+  structureMode=mode;
+  updateStructureModeNote();
+  if(mode==='blank'){
+    storyboard=[
+      {time:60,title:"My opening",prompt:"",visual:""},
+      {time:180,title:"My main content",prompt:"",visual:""},
+      {time:60,title:"My ending",prompt:"",visual:""}
+    ];
+  } else if(mode==='detailed'){
+    storyboard=[
+      {time:30,title:`Introduction: ${topic}`,prompt:`Introduce yourself, name ${topic}, and explain the question or experience your vlog will explore.`,visual:"Choose a clear opening that suits your style."},
+      {time:35,title:"Personal or observed example",prompt:`Describe this example without sensitive details: “${personal}”.`,visual:"Image, timeline, mind-map or key words if useful."},
+      {time:35,title:"Micro–macro connection",prompt:`Explain the individual-level effects, including ${micro}, then connect the example to wider society through ${macros}.`,visual:"A simple micro–macro diagram or key words."},
+      {time:50,title:`Concept or theory 1: ${mainConcept}`,prompt:`Define and apply ${mainConcept}. Explain clearly how it helps you understand the personal example and its wider social context.`,visual:"Definition, application and a short example."},
+      {time:40,title:`Concept or theory 2: ${concept2}`,prompt:`Explain and apply ${concept2}. Show what this idea adds to, develops or questions in your first explanation.`,visual:"A second angle, comparison or evidence."},
+      {time:40,title:`Concept or theory 3: ${concept3}`,prompt:`Explain and apply ${concept3}. Show how it gives a further sociological insight into the same topic and experience.`,visual:"A third angle, comparison or example."},
+      {time:30,title:"Synthesis, evidence and references",prompt:`Bring ${mainConcept}, ${concept2} and ${concept3} together. Support your argument with ${evidence}.`,visual:"Short citation; full reference at the end."},
+      {time:20,title:"Conclusion and reflection",prompt:"Summarise what sociological imagination helped you understand and show your references.",visual:"Final takeaway and references."}
+    ];
+  } else {
+    storyboard=[
+      {time:35,title:"Opening",prompt:`Introduce ${topic} and the example you have chosen: “${personal}”. Decide on an opening that sounds natural in your own voice.`,visual:"Optional title, question, image or direct-to-camera opening."},
+      {time:55,title:"The experience and its context",prompt:`Explain the example and the individual-level effects, including ${micro}. Begin showing why it connects to more than one person's experience.`,visual:"Use only visuals that add meaning."},
+      {time:85,title:`Main analysis: ${mainConcept}`,prompt:`Connect the example to ${macros}. Define and apply ${mainConcept} as your main lens for explaining the micro–macro link.`,visual:"Concept key words, a simple diagram or evidence if helpful."},
+      {time:70,title:`Develop the analysis: ${concept2} and ${concept3}`,prompt:`Apply ${concept2} and ${concept3} to the same example. Explain what each adds, and support the discussion with ${evidence}.`,visual:"Evidence, comparison, alternative view or short example."},
+      {time:45,title:"Closing reflection and references",prompt:`Bring ${mainConcept}, ${concept2} and ${concept3} together. Summarise what sociological imagination helped you understand and include references.`,visual:"Final takeaway and reference list."}
+    ];
+  }
+  renderStoryboard(); updateAll();
+}
+
+function renderRubric(){
+  const box=$('rubricSliders');
+  box.innerHTML='';
+  rubricItems.forEach(item=>{
+    const div=document.createElement('div');
+    div.className='scoreRow';
+    div.innerHTML=`<div><strong>${item.label}</strong><p class="muted">${item.hint}</p></div><div><input id="rubric_${item.id}" type="range" min="0" max="4" value="0" oninput="updateAll()" aria-label="Self-assess ${item.label}"><div class="mini" id="rubric_${item.id}_label">Not checked</div></div>`;
+    box.appendChild(div);
+  });
+}
+function renderChecklist(){
+  const box=$('checklist');
+  box.innerHTML=checklistItems.map((x,i)=>`<label class="checkItem"><input id="check_${i}" type="checkbox" onchange="updateAll()"><span>${escapeHtml(x)}</span></label>`).join('');
+}
+function updateCriteriaFeedback(){
+  let rubricTotal=0;
+  rubricItems.forEach(item=>{
+    const val=Number($(`rubric_${item.id}`).value);
+    rubricTotal+=val;
+    const labels=["Not yet", "Emerging", "Developing", "Mostly ready", "Strong"];
+    $(`rubric_${item.id}_label`).textContent=labels[val];
+  });
+  const checked=checklistItems.filter((_,i)=>$(`check_${i}`)?.checked).length;
+  const mainConcept=getMainConcept();
+  const concepts=getAllConcepts().length;
+  const totalTime=storyboard.reduce((sum,s)=>sum+(Number(s.time)||0),0);
+  const issues=[];
+  if(!mainConcept) issues.push("choose your main sociological concept or theory");
+  if(concepts < 3) issues.push(`select ${3-concepts} more sociological concept${3-concepts===1?'':'s'} or theor${3-concepts===1?'y':'ies'} so that the plan includes at least three`);
+  if(!$('personalExample').value.trim()) issues.push("add a personal or observed example");
+  if(!getSelectedChips('macro').length) issues.push("identify wider social influences");
+  if(!$('evidencePlan').value.trim()) issues.push("plan at least one academic source or reference");
+  if(totalTime>300) issues.push("reduce timing to stay within 5 minutes");
+  if(totalTime<240) issues.push("develop the plan so the vlog has enough depth");
+  let readiness=Math.round(((rubricTotal/20)*55 + (checked/10)*45));
+  if(concepts < 3) readiness=Math.min(readiness,69);
+  let cls='warn', msg='Developing';
+  if(readiness>=80){cls='good'; msg='Strong plan';}
+  else if(readiness<45){cls='bad'; msg='Needs more work';}
+  $('criteriaFeedback').className=`callout ${cls==='good'?'good':cls==='bad'?'warning':''}`;
+  $('criteriaFeedback').innerHTML=`<strong>${msg}: ${readiness}% readiness.</strong><br>${issues.length ? 'Priority improvements: ' + issues.join('; ') + '.' : 'The plan covers the main assessment expectations. Now refine the script, references and visuals.'}`;
+  return readiness;
+}
+
+function updateAll(){
+  const mainConcept=getMainConcept();
+  const supporting=getSupportingConcepts();
+  const mainStatus=$('mainConceptStatus');
+  if(mainStatus){
+    mainStatus.className=`status ${mainConcept?'good':'warn'}`;
+    mainStatus.textContent=mainConcept ? `Concept or theory 1: ${mainConcept}` : 'Choose concept or theory 1';
+  }
+  const supportStatus=$('supportConceptStatus');
+  if(supportStatus){
+    supportStatus.className=`status ${supporting.length===2?'good':'warn'}`;
+    supportStatus.textContent=supporting.length===2
+      ? '2 of 2 additional concepts selected — three ideas in total'
+      : `${supporting.length} of 2 additional concepts selected — choose ${2-supporting.length} more`;
+  }
+  updateTimeStatus();
+  const readiness=updateCriteriaFeedback();
+  $('progressBar').style.width=`${Math.min(100,readiness)}%`;
+  $('progressText').textContent=`${readiness}% formative readiness`;
+}
+
+function generateFinalPlan(){
+  const name=$('studentName').value.trim();
+  const topic=slugToTitle(selectedTopic);
+  const personal=normaliseText($('personalExample').value, '[add a personal or observed example]');
+  const micro=normaliseText($('microImpact').value, '[add the individual-level effects]');
+  const meso=getSelectedChips('meso');
+  const macro=getSelectedChips('macro');
+  const mainConcept=getMainConcept();
+  const supporting=getSupportingConcepts();
+  const evidence=normaliseText($('evidencePlan').value, '[add your academic source or reference plan]');
+  const argument=normaliseText($('mainArgument').value, '[add your main argument]');
+  const bridge=$('bridgeOutput').textContent.includes('Your sociological') ? generateBridgeSentence() : $('bridgeOutput').textContent;
+  const total=storyboard.reduce((sum,s)=>sum+(Number(s.time)||0),0);
+  const checked=checklistItems.filter((_,i)=>$(`check_${i}`)?.checked).length;
+  const modeLabels={flexible:'Light-touch outline',detailed:'Detailed prompts',blank:'Mostly blank plan'};
+  const plan = `MY FLEXIBLE SOCIOLOGICAL IMAGINATION VLOG PLAN
+${name ? `Name: ${name}
+` : ''}One main topic: ${topic}
+Planning style: ${modeLabels[structureMode] || modeLabels.flexible}
+Estimated running time: ${total} seconds (${Math.floor(total/60)}:${String(total%60).padStart(2,'0')})
+
+IMPORTANT
+This is a planning aid, not a required script or slide order. I can combine, rename, reorder or remove sections so the vlog sounds like my own work and reflects my own creative decisions.
+
+1. MY TOPIC AND FOCUS
+I am applying sociological imagination to one main topic: ${topic.toLowerCase()}.
+
+2. PERSONAL OR OBSERVED EXAMPLE
+${personal}
+
+3. MICRO-LEVEL EFFECTS
+At the individual level, the example involves:
+${micro}
+
+4. SETTINGS OR INSTITUTIONS THAT MAY MATTER
+${meso.length ? joinList(meso, '[choose relevant settings or institutions]') : '[choose relevant settings or institutions]'}
+
+5. WIDER SOCIAL INFLUENCES
+${macro.length ? joinList(macro, '[choose wider social forces]') : '[choose wider social forces]'}
+
+6. SOCIOLOGICAL IDEAS
+Concept or theory 1 — main lens: ${mainConcept || '[choose your main concept or theory]'}
+Concept or theory 2: ${supporting[0] || '[choose concept or theory 2]'}
+Concept or theory 3: ${supporting[1] || '[choose concept or theory 3]'}
+
+7. MAIN ARGUMENT
+${argument}
+
+8. SOCIOLOGICAL IMAGINATION LINK
+${bridge}
+
+9. EVIDENCE / REFERENCES TO ADD
+${evidence}
+
+10. FLEXIBLE VLOG OUTLINE
+${storyboard.map((s,i)=>`Section ${i+1}: ${s.title} (${s.time}s)
+Possible content: ${s.prompt || '[add your own content]'}
+Possible visual/media choice: ${s.visual || '[optional]'}`).join('\n\n')}
+
+11. CHECKLIST STATUS
+${checked}/10 checklist items currently ticked.
+
+12. NEXT STEPS
+- Keep the structure flexible and write the script in my own voice.
+- Apply all three selected sociological concepts or theories meaningfully.
+- Give the main lens the greatest depth if useful, while still explaining how concepts or theories 2 and 3 help analyse the example.
+- Keep linking the personal example to wider society rather than telling only a personal story.
+- Add references at the end using Harvard Newcastle style.
+- Check that the finished video is close to 5 minutes.
+- Avoid sensitive personal information and copyrighted or inappropriate material.`;
+  $('finalPlan').textContent=plan;
+  updateAll();
+}
+function copyPlan(){
+  generateFinalPlan();
+  navigator.clipboard.writeText($('finalPlan').textContent).then(()=>alert('Plan copied to clipboard.')).catch(()=>alert('Copy failed. Select the text manually.'));
+}
+function downloadPlan(){
+  generateFinalPlan();
+  const blob=new Blob([$('finalPlan').textContent],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='sociological_imagination_vlog_plan.txt'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function saveWork(show=true){
+  const data={
+    selectedTopic,
+    structureMode,
+    studentName:$('studentName').value,
+    personalExample:$('personalExample').value,
+    microImpact:$('microImpact').value,
+    evidencePlan:$('evidencePlan').value,
+    mainArgument:$('mainArgument').value,
+    meso:getSelectedChips('meso'), macro:getSelectedChips('macro'), mainConcept:getMainConcept(), supportConcept:getSupportingConcepts(),
+    storyboard,
+    checks:checklistItems.map((_,i)=>$(`check_${i}`)?.checked || false),
+    rubrics:Object.fromEntries(rubricItems.map(item=>[item.id,Number($(`rubric_${item.id}`).value)])),
+    bridge:$('bridgeOutput').textContent
+  };
+  localStorage.setItem('sociologyVlogBuilder',JSON.stringify(data));
+  if(show) alert('Saved in this browser.');
+}
+function loadWork(show=true){
+  const raw=localStorage.getItem('sociologyVlogBuilder');
+  if(!raw){ if(show) alert('No saved work found in this browser.'); return; }
+  try{
+    const data=JSON.parse(raw);
+    selectTopic(data.selectedTopic || selectedTopic);
+    structureMode=data.structureMode || 'flexible';
+    if($('structureMode')) $('structureMode').value=structureMode;
+    updateStructureModeNote();
+    $('studentName').value=data.studentName || '';
+    $('personalExample').value=data.personalExample || '';
+    $('microImpact').value=data.microImpact || '';
+    $('evidencePlan').value=data.evidencePlan || '';
+    $('mainArgument').value=data.mainArgument || '';
+    ['meso','macro'].forEach(name=>{
+      document.querySelectorAll(`input[name="${name}"]`).forEach(input=>{ input.checked=(data[name]||[]).includes(input.value); });
+      const first=document.querySelector(`input[name="${name}"]`);
+      if(first) setChipStyle(first.closest('.chips'));
+    });
+    document.querySelectorAll('input[name="mainConcept"]').forEach(input=>{ input.checked=input.value===(data.mainConcept||''); });
+    document.querySelectorAll('input[name="supportConcept"]').forEach(input=>{ input.checked=(data.supportConcept||[]).includes(input.value); });
+    if($('mainConceptChips')) setChipStyle($('mainConceptChips'));
+    if($('supportConceptChips')) setChipStyle($('supportConceptChips'));
+    handleMainConceptChange();
+    storyboard=data.storyboard || JSON.parse(JSON.stringify(defaultStoryboard));
+    updateStructureModeNote();
+    renderStoryboard();
+    (data.checks||[]).forEach((v,i)=>{ if($(`check_${i}`)) $(`check_${i}`).checked=v; });
+    Object.entries(data.rubrics||{}).forEach(([k,v])=>{ if($(`rubric_${k}`)) $(`rubric_${k}`).value=v; });
+    if(data.bridge) $('bridgeOutput').textContent=data.bridge;
+    updateAll();
+    if(show) alert('Loaded saved work.');
+  } catch(e){ if(show) alert('Saved work could not be loaded.'); }
+}
+function resetWork(){
+  if(!confirm('Reset the simulator? This clears the form in this browser.')) return;
+  localStorage.removeItem('sociologyVlogBuilder');
+  selectedTopic='gender-studies'; structureMode='flexible'; storyboard=JSON.parse(JSON.stringify(flexibleStoryboard));
+  if($('structureMode')) $('structureMode').value='flexible';
+  updateStructureModeNote();
+  document.querySelectorAll('input[type="text"],textarea').forEach(x=>x.value='');
+  document.querySelectorAll('input[type="checkbox"],input[type="radio"]').forEach(x=>x.checked=false);
+  document.querySelectorAll('input[type="range"]').forEach(x=>x.value=0);
+  $('bridgeOutput').textContent='Your sociological imagination sentence will appear here.';
+  $('sentenceFeedback').innerHTML='<h3>Feedback will appear here</h3><p class="muted">The checker looks for a personal example, wider social forces and clearly applied sociological language. Your complete vlog must use at least three concepts or theories.</p>';
+  $('finalPlan').textContent='Your final plan will appear here.';
+  selectTopic(selectedTopic); renderStoryboard(); updateAll(); showPanel('overview');
+}
+
+document.addEventListener('DOMContentLoaded', initialise);
+</script>
+</body>
+</html>
